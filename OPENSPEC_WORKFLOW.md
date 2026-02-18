@@ -1,379 +1,346 @@
-# OpenSpec + Cursor 工作流指南
+# OpenSpec 工作流程指南
 
-> 快速上手：将 OpenSpec 集成到 Cursor 中，实现规格驱动开发。
+## 📖 什么是 OpenSpec？
 
-## 🎯 核心理念
+OpenSpec 是一个用于描述和构建软件项目的规范系统。它通过 `spec.md` 文件定义项目的需求、技术栈和验收标准，然后指导实际的代码实现。
 
-**OpenSpec** 提供规格（Spec）和任务清单（Features）让 AI 明确要做什么；
-**Cursor** 负责高质量的代码编写。
-
----
-
-## 📋 工作流流程图
+## 🎯 OpenSpec workflow 流程
 
 ```
-需求描述
-  ↓
-[Cursor: 使用 OpenSpec 创建 Spec]
-  ↓
-生成 spec.md（功能需求、技术要求、验收标准）
-  ↓
-生成 features.json（可验证的任务清单）
-  ↓
-[Cursor: 根据 Spec 编写代码]
-  ↓
-根据 features.json 执行任务（按顺序）
-  ↓
-[验收测试]
-  ↓
-任务标记完成 ✅
+需求对话 → 创建 spec.md → 拆分 features → 编码实现 → 测试验收
+     ↓           ↓              ↓            ↓           ↓
+   用户参与    技术文档      任务清单      代码编写    质量保证
 ```
 
----
+### 阶段 1：需求调研对话
 
-## 🔧 本地环境配置
+**目标**：了解用户需求，明确功能范围
 
-### 1. 安装 OpenSpec
+**步骤**：
+1. 用户提出功能需求
+2. 向用户提出澄清问题（如果有）
+3. 整理需求，确认理解无误
+4. **完成标记**：用户确认需求文档
+
+### 阶段 2：创建 spec.md
+
+**目标**：将需求转化为规范文档
+
+**位置**：`openspec/proposals/<项目名>/spec.md`
+
+**内容模板**：
+
+```markdown
+# <项目名> - 描述
+
+## 1️⃣ 核心功能需求
+- 功能点1
+- 功能点2
+...
+
+## 2️⃣ 技术要求
+- 文件结构
+- 技术栈
+- 数据格式
+...
+
+## 3️⃣ UI设计规范
+- 整体布局
+- 颜色方案
+- 字体样式
+...
+
+## 4️⃣ 验收标准
+- 功能验收
+- 技术验收
+- UI/性能验收
+...
+
+## 5️⃣ 实施步骤
+
+## 6️⃣ 里程碑检查点
+
+## 7️⃣ 交付物清单
+
+## 8️⃣ 用户手册
+
+## 9️⃣ 进阶功能（可选）
+```
+
+**完成标记**：spec.md 创建完成
+
+### 阶段 3：拆分 features.json
+
+**目标**：将 spec.md 中的需求转化为可执行的任务清单
+
+**位置**：`openspec/proposals/<项目名>/features.json`
+
+**结构示例**：
+
+```json
+{
+  "name": "项目名称",
+  "description": "项目描述",
+  "version": "1.0",
+  "scope": [
+    {
+      "name": "模块名称",
+      "description": "模块说明",
+      "features": [
+        {
+          "id": "feature-id",
+          "description": "功能描述",
+          "status": false,
+          "estimatedHours": 4
+        }
+      ]
+    }
+  ],
+  "totalEstimatedHours": 130,
+  "estimatedDays": 20
+}
+```
+
+**完成标记**：features.json 创建完成
+
+**注意**：
+- 每个功能独立可执行
+- 估算工时便于项目管理
+- status 字段用于追踪进度
+
+### 阶段 4：Cursor 编码实现
+
+**目标**：按照 spec.md 和 features.json 创建代码
+
+**工具**：Cursor（AI 编码助手）
+
+**Cursor 提示词示例**：
+
+```
+请根据 openspec/proposals/team-todo-app/spec.md 创建这个高级版 Team Todo App
+```
+
+**执行要点**：
+1. 创建项目目录结构
+2. 实现前端文件（index.html, styles.css, app.js）
+3. 实现 localStorage 数据存储
+4. 实现所有必需功能
+5. 优化 UI/UX
+
+### 阶段 5：功能验收
+
+**目标**：对照 spec.md 的验收标准逐项测试
+
+**验收清单**：
+- [ ] 功能验收：所有必需功能是否实现
+- [ ] 技术验收：是否符合理术要求
+- [ ] UI/性能验收：用户体验是否流畅
+
+## 📂 项目目录结构
+
+```
+openspec-test-project/
+├── README.md                          # 项目说明
+├── OPENSPEC_WORKFLOW.md               # 工作流程指南 ← 当前文件
+├── index.html                         # 主页面
+├── styles.css                         # 样式表
+├── app.js                             # 应用逻辑
+├── openspec/                          # OpenSpec 规范目录
+│   ├── openspec.json                  # 项目配置
+│   └── proposals/                     # 提案目录
+│       ├── add-todo-app/              # 参考项目（基础版）
+│       │   ├── spec.md
+│       │   └── features.json
+│       └── team-todo-app/             # 当前项目（高级版）
+│           ├── spec.md                # ← 需求规范
+│           └── features.json          # ← 任务清单
+```
+
+## 📋 OpenSpec 规范文件示例
+
+### spec.md - 需求规范
+
+```markdown
+# Team Todo App - 高级版团队协作应用
+
+## 1️⃣ 核心功能需求
+
+### 1.1 用户管理
+- [ ] 添加新用户
+- [ ] 删除用户
+- [ ] 更新用户信息
+- [ ] 切换用户角色
+- [ ] 数据隔离
+
+### 1.2 任务管理
+- [ ] 创建任务
+- [ ] 读取任务列表
+- [ ] 更新任务
+- [ ] 删除任务
+- [ ] 标记完成
+- [ ] 设置优先级
+- [ ] 任务分类
+- [ ] 任务分配
+- [ ] 添加描述
+- [ ] 设置截止日期
+- [ ] 依赖关系
+
+## 2️⃣ 技术要求
+
+### 2.1 文件结构
+- index.html
+- styles.css
+- app.js
+- README.md
+
+### 2.2 技术栈
+- 纯前端：HTML5, CSS3, JavaScript (ES6+)
+- 本地存储：localStorage
+- 图表库：ECharts
+- 无后端
+
+### 2.3 数据格式
+- 用户数据
+- 任务数据
+- 统计数据
+
+## 3️⃣ UI 设计规范
+
+### 3.1 颜色方案
+- 主色：#007AFF
+- 成功色：#34C759
+- 警告色：#FF9500
+- 危险色：#FF3B30
+
+### 3.2 布局
+- 三区域布局：看板/任务/目标
+- 响应式设计
+
+## 4️⃣ 验收标准
+
+### 功能验收
+- [ ] 所有核心功能正常工作
+- [ ] 无功能性缺陷
+- [ ] 数据正确持久化
+
+### 技术验收
+- [ ] 代码结构清晰
+- [ ] 符合技术栈要求
+- [ ] 无安全漏洞
+
+### UI/性能验收
+- [ ] 响应式适配
+- [ ] 动画流畅
+- [ ] 性能良好
+```
+
+### features.json - 任务清单
+
+```json
+{
+  "name": "Team Todo App",
+  "version": "1.0",
+  "scope": [
+    {
+      "name": "用户管理",
+      "features": [
+        {
+          "id": "user-add",
+          "description": "添加新用户",
+          "status": false,
+          "estimatedHours": 2
+        }
+      ]
+    }
+  ],
+  "totalEstimatedHours": 130,
+  "estimatedDays": 20
+}
+```
+
+## 🚀 开始使用 OpenSpec
+
+### 步骤 1：创建项目
 
 ```bash
-pip install openspec
-```
-
-### 2. 初始化项目（可选）
-
-```bash
+# 创建项目目录
 mkdir my-project
 cd my-project
-openspec init
+
+# 创建项目目录结构
+mkdir openspec/proposals
 ```
 
-初始化后生成：
-```
-my-project/
-├── openspec/
-│   ├── openspec.json    # 项目配置
-│   └── proposals/       # 需求提案
-```
-
-### 3. Cursor 配置
-
-打开 Cursor 设置（`Cursor: Settings`），在 `Claude` 提示词中添加：
-
-```markdown
-# OpenSpec 集成规则
-
-1. 在开始编码前，先为任务创建 OpenSpec 规格
-2. 按照 Spec 中的技术要求和验收标准
-3. 根据 features.json 中的 feature ID 逐步实现
-4. 完成每个 feature 后，标记为 true 并提交
-
-# 使用示例
-
-任务：添加用户注册功能
-步骤：
-1. 创建 spec.md 包含需求、技术要求、验收标准
-2. 创建 features.json 定义任务清单
-3. 实现 create-user 特性
-4. 测试并验证
-```
-
----
-
-## 💡 使用方式
-
-### 方式一：手动打开 Spec
-
-**Step 1：在 Cursor 中打开 Spec 文件**
-```
-my-project/openspec/proposals/my-feature/spec.md
-```
-
-**Step 2：参考 Spec 编写代码**
-```markdown
-# 在 Cursor 中创建
-File: index.html
-File: styles.css
-File: app.js
-
-# 代码应该遵循 Spec 中的：
-- 技术要求
-- 验收标准
-- 实施步骤
-```
-
-### 方式二：让 Cursor 自动创建
-
-**Step 1：在 Cursor 中输入**
-```
-请根据 [文件路径] 的 Spec 创建一个 Todo List 应用
-```
-
-**Step 2：Cursor 会自动**
-- 读取 Spec
-- 分析技术要求
-- 按 features 顺序编写代码
-
----
-
-## 🚀 实战演练
-
-### 示例：任务添加功能
-
-#### 输入给 Cursor：
-```
-请根据 openspec/proposals/add-todo-app/spec.md 创建一个完整的 Todo List 应用
-```
-
-#### Cursor 会执行：
-
-**1. 创建 index.html**
-```html
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Todo List</h1>
-        <div class="input-group">
-            <input type="text" id="todoInput" placeholder="Add a new task...">
-            <button id="addBtn">Add</button>
-        </div>
-        <ul id="todoList"></ul>
-    </div>
-    <script src="app.js"></script>
-</body>
-</html>
-```
-
-**2. 创建 styles.css**
-```css
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
-
-.input-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-button {
-    padding: 10px 20px;
-    background: #007acc;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.todo-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background: #f5f5f5;
-    margin-bottom: 5px;
-    border-radius: 4px;
-}
-
-.completed {
-    text-decoration: line-through;
-    color: #999;
-}
-```
-
-**3. 创建 app.js**
-```javascript
-class TodoApp {
-    constructor() {
-        this.todos = JSON.parse(localStorage.getItem('todos')) || [];
-        this.initElements();
-        this.bindEvents();
-        this.render();
-    }
-
-    initElements() {
-        this.todoInput = document.getElementById('todoInput');
-        this.addBtn = document.getElementById('addBtn');
-        this.todoList = document.getElementById('todoList');
-    }
-
-    bindEvents() {
-        this.addBtn.addEventListener('click', () => this.addTodo());
-        this.todoInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.addTodo();
-        });
-    }
-
-    addTodo() {
-        const text = this.todoInput.value.trim();
-        if (!text) return;
-
-        const todo = {
-            id: Date.now(),
-            text,
-            completed: false
-        };
-
-        this.todos.push(todo);
-        this.save();
-        this.render();
-        this.todoInput.value = '';
-    }
-
-    toggleTodo(id) {
-        this.todos = this.todos.map(todo =>
-            todo.id === id ? { ...todo, completed: !todo.completed } : todo
-        );
-        this.save();
-        this.render();
-    }
-
-    deleteCompleted() {
-        this.todos = this.todos.filter(todo => !todo.completed);
-        this.save();
-        this.render();
-    }
-
-    save() {
-        localStorage.setItem('todos', JSON.stringify(this.todos));
-    }
-
-    render() {
-        this.todoList.innerHTML = this.todos.map(todo => `
-            <li class="todo-item ${todo.completed ? 'completed' : ''}">
-                <span>${todo.text}</span>
-                <div class="actions">
-                    <input type="checkbox" ${todo.completed ? 'checked' : ''}>
-                    <button class="delete-btn">删除</button>
-                </div>
-            </li>
-        `).join('');
-
-        // 绑定事件
-        this.todoList.addEventListener('change', (e) => {
-            if (e.target.type === 'checkbox') {
-                this.toggleTodo(Number(e.target.closest('.todo-item').dataset.id));
-            }
-        });
-
-        this.todoList.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete-btn')) {
-                const li = e.target.closest('.todo-item');
-                this.todos = this.todos.filter(todo => todo.id !== Number(li.dataset.id));
-                this.save();
-                this.render();
-            }
-        });
-    }
-}
-
-const app = new TodoApp();
-```
-
----
-
-## ✅ 验收流程
-
-根据 Spec 中的验收标准逐一验证：
-
-1. ✅ 任务添加功能正常工作
-2. ✅ 任务切换完成状态后视觉变化
-3. ✅ 删除任务功能正常
-4. ✅ 刷新页面后任务数据不丢失
-5. ✅ UI 美观、简洁、响应式
-
----
-
-## 📝 常用命令
+### 步骤 2：创建 spec.md
 
 ```bash
-# 查看已安装的 OpenSpec 版本
-openspec --version
-
-# 查看提案列表
-openspec list
-
-# 删除提案
-openspec delete <proposal-id>
-
-# 添加一个新的提案
-openspec add
+# 编辑 spec.md
+nano openspec/proposals/my-project/spec.md
 ```
 
----
+### 步骤 3：创建 features.json
 
-## 💭 最佳实践
-
-### ✅ 好的做法
-
-```markdown
-1. Spec 要详细，包含技术要求和验收标准
-2. Features 要具体，ID 和描述清晰
-3. 每完成一个 feature 就提交代码
-4. 测试通过后再标记 feature 完成
+```bash
+# 编辑 features.json
+nano openspec/proposals/my-project/features.json
 ```
 
-### ❌ 不好的做法
+### 步骤 4：使用 Cursor 编码
 
-```markdown
-1. Spec 太模糊，不知道要做什么
-2. 让 AI 直接写代码，没有 Spec
-3. 只提交最终结果，没有过程
+打开 Cursor，执行：
+
+```
+请根据 openspec/proposals/my-project/spec.md 创建这个项目
 ```
 
+## ✅ 流程检查表
+
+- [ ] 需求对话完成
+- [ ] spec.md 创建完成
+- [ ] features.json 创建完成
+- [ ] Cursor 编码完成
+- [ ] 功能验收通过
+- [ ] 项目交付
+
+## 📊 统计信息
+
+### Project Statistics
+
+- **总功能数**: 26 基础功能
+- **总任务数**: 27 Features
+- **总验收标准**: 19 项
+- **预估工时**: 130 小时
+- **预估开发时间**: 14-20 个工作日
+
+### Progress Tracking
+
+使用 `features.json` 中的 `status` 字段：
+
+```json
+{
+  "id": "feature-id",
+  "status": false,  // false = 未完成, true = 已完成
+  "estimatedHours": 4
+}
+```
+
+## 💡 最佳实践
+
+1. **需求明确**：在创建 spec.md 前确保需求已经被充分讨论
+2. **循序渐进**：按 features.json 的顺序逐个实现，不要并行开发
+3. **及时记录**：在开发过程中更新 features.json 的状态
+4. **测试驱动**：每个功能完成后立即测试验收
+5. **文档完整**：确保 spec.md 和 features.json 始终与代码保持同步
+
+## 🔗 相关资源
+
+- [OpenSpec 规范](./openspec/proposals/team-todo-app/spec.md)
+- [项目需求文档](./openspec/proposals/team-todo-app/spec.md)
+- [任务清单](./openspec/proposals/team-todo-app/features.json)
+- [README](./README.md)
+
 ---
 
-## 🎓 学习资源
-
-根据你的笔记相关链接：
-
-- [OpenSpec GitHub](https://github.com/Fission-AI/OpenSpec)
-- [OpenSpec 官网](https://openspec.dev/)
-
----
-
-## 🚦 快速开始
-
-1. **打开测试项目**：`cd ~/openspec-test-project`
-2. **查看 Spec**：`openspec/proposals/add-todo-app/spec.md`
-3. **让 Cursor 创建代码**：
-   ```
-   请根据 openspec/proposals/add-todo-app/spec.md 创建 Todo List 应用
-   ```
-4. **运行并测试**：使用浏览器打开 `index.html`
-
----
-
-## 🏆 总结
-
-OpenSpec + Cursor 工作流的核心是：
-
-> **用 Spec 明确要做什么，用 Cursor 高质量地完成**
-
-- ✅ Spec 明确需求、技术要求、验收标准
-- ✅ Features 提供**可验证**的任务清单
-- ✅ Cursor 遵循 Spec 编写符合要求的代码
-- ✅ 完成任务后更新 features.json 并标记完成
-
-这种工作流确保 AI 不再"自由发挥"，而是按照明确的规格产出正确、可验收的代码。
+**Created**: 2024-02-18
+**Version**: 1.0
+**Status**: Active
