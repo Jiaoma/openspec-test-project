@@ -1,0 +1,31 @@
+{
+  "name": "Todo List App",
+  "description": "Simple Todo List application with add/toggle/delete functionality",
+  "features": [
+    {
+      "id": "create-task",
+      "description": "Create new todo task with input field",
+      "status": false
+    },
+    {
+      "id": "toggle-task",
+      "description": "Toggle task completion status with visual feedback",
+      "status": false
+    },
+    {
+      "id": "delete-completed",
+      "description": "Delete completed tasks from the list",
+      "status": false
+    },
+    {
+      "id": "localstorage",
+      "description": "Persist todos to localStorage across sessions",
+      "status": false
+    },
+    {
+      "id": "responsive-ui",
+      "description": "Responsive design that works on mobile and desktop",
+      "status": false
+    }
+  ]
+}

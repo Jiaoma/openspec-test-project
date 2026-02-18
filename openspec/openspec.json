@@ -1,0 +1,11 @@
+{
+  "agent": "cursor",
+  "model": "claude-3-5-sonnet-20241022",
+  "features": [
+    {
+      "id": "spec-driven",
+      "description": "遵循 OpenSpec 规格驱动开发的最佳实践",
+      "status": true
+    }
+  ]
+}
